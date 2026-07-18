@@ -24,8 +24,8 @@ html,body{margin:0;min-height:100%;font-family:-apple-system,BlinkMacSystemFont,
 body{min-height:100dvh;background:radial-gradient(circle at 50% -10%,#2a61b7 0,#0d3d86 30%,#071d49 70%)}
 .shell{width:min(100%,560px);min-height:100dvh;margin:auto;padding:calc(24px + env(safe-area-inset-top)) 18px calc(24px + env(safe-area-inset-bottom));display:flex;flex-direction:column}
 header{text-align:center;color:#fff;padding:12px 0 22px}
-.shield{width:92px;height:92px;margin:auto;display:grid;place-items:center;border-radius:28% 28% 42% 42%;background:linear-gradient(145deg,#f5d36c,#b97b08);border:4px solid #ffffff88;box-shadow:0 14px 34px #0005}
-.shield img{width:100%;height:100%;object-fit:cover;border-radius:24% 24% 38% 38%}
+.shield{width:104px;height:116px;margin:auto;display:grid;place-items:center;filter:drop-shadow(0 14px 18px #0005)}
+.shield img{width:100%;height:100%;object-fit:contain}
 h1{font:700 clamp(36px,10vw,50px)/1 Georgia,serif;margin:16px 0 7px;letter-spacing:-1px}
 .gold{color:#f6cb55}
 .tag{margin:0;color:#dce8ff;font-size:16px;line-height:1.45}
