@@ -8,21 +8,22 @@ const installExperience = `
   .install button{width:100%;min-height:54px;border:0;border-radius:16px;background:linear-gradient(135deg,#d7aa31,#f3d477);color:#071d49;font-weight:800;padding:14px 18px;font-size:17px;box-shadow:0 8px 20px #071d4920}
   .install p{margin:9px 0 0;color:#626b7c;font-size:13px;line-height:1.45}
   #slInstallGuide[hidden]{display:none}
-  #slInstallGuide{position:fixed;inset:0;z-index:9999;background:#061a42eF;display:flex;align-items:flex-end;justify-content:center;padding:18px;padding-bottom:calc(18px + env(safe-area-inset-bottom))}
-  .sl-guide-card{width:min(100%,520px);background:#fff;border-radius:26px;padding:24px 20px 20px;box-shadow:0 24px 70px #0008;color:#162039;text-align:center}
-  .sl-guide-icon{width:66px;height:66px;border-radius:20px;margin:0 auto 12px;display:grid;place-items:center;background:linear-gradient(135deg,#0d3d86,#1761bc);color:#fff;font-size:34px}
-  .sl-guide-card h2{margin:0 0 8px;color:#071d49;font-size:25px}
-  .sl-guide-card>p{margin:0 0 17px;color:#5d6678;line-height:1.45}
-  .sl-steps{display:grid;gap:10px;text-align:left;margin:15px 0}
-  .sl-step{display:grid;grid-template-columns:38px 1fr;gap:11px;align-items:center;background:#f4f7fb;border:1px solid #e1e7f0;border-radius:15px;padding:12px}
-  .sl-step-num{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;background:#0d3d86;color:#fff;font-weight:800}
-  .sl-step strong{display:block;color:#071d49;font-size:15px}
-  .sl-step small{display:block;color:#60697a;font-size:13px;margin-top:2px;line-height:1.35}
-  .sl-primary,.sl-secondary{width:100%;min-height:52px;border-radius:15px;font-size:16px;font-weight:800;padding:12px 16px}
+  #slInstallGuide{position:fixed;inset:0;z-index:9999;background:#061a42ef;display:flex;align-items:flex-end;justify-content:center;padding:18px;padding-bottom:calc(18px + env(safe-area-inset-bottom));overflow:auto}
+  .sl-guide-card{width:min(100%,520px);background:#fff;border-radius:26px;padding:22px 20px 18px;box-shadow:0 24px 70px #0008;color:#162039;text-align:center;max-height:94dvh;overflow:auto}
+  .sl-guide-icon{width:62px;height:62px;border-radius:19px;margin:0 auto 10px;display:grid;place-items:center;background:linear-gradient(135deg,#0d3d86,#1761bc);color:#fff;font-size:31px}
+  .sl-guide-card h2{margin:0 0 7px;color:#071d49;font-size:24px}
+  .sl-guide-card>p{margin:0 0 14px;color:#5d6678;line-height:1.4}
+  .sl-steps{display:grid;gap:8px;text-align:left;margin:13px 0}
+  .sl-step{display:grid;grid-template-columns:34px 1fr;gap:10px;align-items:center;background:#f4f7fb;border:1px solid #e1e7f0;border-radius:14px;padding:10px}
+  .sl-step-num{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:#0d3d86;color:#fff;font-weight:800}
+  .sl-step strong{display:block;color:#071d49;font-size:14px}
+  .sl-step small{display:block;color:#60697a;font-size:12px;margin-top:2px;line-height:1.3}
+  .sl-primary,.sl-secondary{width:100%;min-height:50px;border-radius:15px;font-size:16px;font-weight:800;padding:11px 15px}
   .sl-primary{border:0;background:linear-gradient(135deg,#d7aa31,#f3d477);color:#071d49}
-  .sl-secondary{border:1px solid #d7deea;background:#fff;color:#34405a;margin-top:9px}
-  .sl-note{font-size:12px!important;margin:12px 0 0!important;color:#70798a!important}
-  @media(min-width:700px){#slInstallGuide{align-items:center}.sl-guide-card{padding:28px}}
+  .sl-secondary{border:1px solid #d7deea;background:#fff;color:#34405a;margin-top:8px}
+  .sl-note{font-size:12px!important;margin:10px 0 0!important;color:#70798a!important}
+  .sl-demo-link{display:inline-block;margin-top:10px;color:#0d3d86;font-size:12px;font-weight:700;text-decoration:none}
+  @media(min-width:700px){#slInstallGuide{align-items:center}.sl-guide-card{padding:26px}}
 </style>
 <div id="slInstallGuide" hidden role="dialog" aria-modal="true" aria-labelledby="slGuideTitle">
   <div class="sl-guide-card">
@@ -44,6 +45,8 @@ const installExperience = `
   const continueButton = document.getElementById('slContinue');
   const originalButton = document.getElementById('installButton');
   const originalHelp = document.getElementById('installHelp');
+  const params = new URLSearchParams(location.search);
+  const forceDemo = params.get('install') === '1' || params.get('demo') === '1';
   const standalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
   const ua = navigator.userAgent || '';
   const isIOS = /iPhone|iPad|iPod/i.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
@@ -53,7 +56,7 @@ const installExperience = `
   const step = (number, title, detail) => '<div class="sl-step"><span class="sl-step-num">' + number + '</span><span><strong>' + title + '</strong><small>' + detail + '</small></span></div>';
 
   function configureGuide() {
-    if (standalone) {
+    if (standalone && !forceDemo) {
       guide.hidden = true;
       if (originalButton) originalButton.style.display = 'none';
       if (originalHelp) originalHelp.textContent = 'SeniorLimo is already installed on this device.';
@@ -61,16 +64,22 @@ const installExperience = `
     }
 
     if (isIOS) {
-      intro.textContent = 'Three quick taps add SeniorLimo to your Home Screen.';
-      steps.innerHTML = step('1','Tap the Share button','Look for the square with the upward arrow in Safari.') + step('2','Tap “Add to Home Screen”','Scroll down slightly if you do not see it.') + step('3','Tap “Add”','SeniorLimo will appear with your other apps.');
-      installNow.textContent = 'Show Me What to Tap';
+      intro.textContent = 'Follow these Apple steps. Your Safari layout may begin with the three dots.';
+      steps.innerHTML =
+        step('1','Tap the three dots •••','They are usually at the bottom-right of Safari.') +
+        step('2','Tap “Share”','It appears at the top of the small menu.') +
+        step('3','Tap “View More” if needed','This opens the full Share menu.') +
+        step('4','Tap “Add to Home Screen”','Scroll down until you see it.') +
+        step('5','Leave “Open as Web App” turned on','This makes it open like an app.') +
+        step('6','Tap “Add”','SeniorLimo will appear on your Home Screen.');
+      installNow.textContent = 'Start: Tap the Three Dots •••';
       installNow.onclick = () => {
-        installNow.textContent = 'Tap Safari’s Share Button Now ↑';
-        intro.textContent = 'Use the Share button in your browser, then choose “Add to Home Screen.”';
+        installNow.textContent = 'Next: Tap Share';
+        intro.textContent = 'You are doing it correctly. Tap the three dots, then tap Share.';
       };
     } else if (isAndroid) {
       intro.textContent = 'Tap once to add SeniorLimo to your phone.';
-      steps.innerHTML = step('1','Tap “Install on My Phone”','Your phone will open the install confirmation.') + step('2','Tap “Install”','SeniorLimo will appear with your other apps.');
+      steps.innerHTML = step('1','Tap “Install on My Android”','Your phone will open the install confirmation.') + step('2','Tap “Install”','SeniorLimo will appear with your other apps.');
       installNow.textContent = 'Install on My Android';
       installNow.onclick = async () => {
         if (deferredPrompt) {
@@ -108,12 +117,14 @@ const installExperience = `
       guide.hidden = false;
     };
   }
-  if (originalHelp) originalHelp.textContent = 'Add it to your phone for fast, one-tap access.';
+  if (originalHelp) {
+    originalHelp.innerHTML = 'Add it to your phone for fast, one-tap access.<br><a class="sl-demo-link" href="/?install=1">Show first-time install guide again</a>';
+  }
 
   configureGuide();
   let seen = false;
   try { seen = localStorage.getItem('sl-install-guide-seen') === 'yes'; } catch (_) {}
-  if (!standalone && !seen) setTimeout(() => { guide.hidden = false; }, 450);
+  if (!standalone && (!seen || forceDemo)) setTimeout(() => { guide.hidden = false; }, 350);
 })();
 </script>`;
 
