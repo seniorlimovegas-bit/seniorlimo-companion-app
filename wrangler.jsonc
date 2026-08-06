@@ -1,6 +1,6 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "seniorlimo-companion-app",
-  "main": "src/hq-wrapper.js",
+  "main": "src/booking-launch-fix.js",
   "compatibility_date": "2026-07-18"
 }
