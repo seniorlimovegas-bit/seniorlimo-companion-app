@@ -1,7 +1,7 @@
-import app from './booking-launch-fix.js';
+import app from './hq-wrapper.js';
 
 const links = {
-  booking: '/book-seniorlimo',
+  booking: 'https://mwai-command-center.seniorlimovegas.workers.dev/book/seniorlimo',
   deals: 'https://seniorlimo.com/gold-deals-market-place',
   showcase: 'https://seniorlimo.com/marketplace-showcase',
   partners: 'https://seniorlimo.com/business-partner-programs',
